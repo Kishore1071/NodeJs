@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "NodeJs Learning Application",
   "main": "src/app.js",
+  "type": "module",
   "scripts": {
     "start": "npx nodemon src/app.js"
   },

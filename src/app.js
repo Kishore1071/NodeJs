@@ -1,20 +1,26 @@
-const express = require('express')
+import express, { json, urlencoded } from 'express'
+import { set, connect } from 'mongoose'
+import { config } from 'dotenv'
+import CustomerRouter from './customers/customerRoutes.js'
+import ProductRouter from './products/productRoutes.js'
+
 const app = express()
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
 
-const mongoose = require('mongoose')
-mongoose.set('strictQuery', false)
+app.use(json())
+app.use(urlencoded({extended: true}))
 
-const dotenv = require('dotenv')
-dotenv.config()
+config()
+set('strictQuery', false)
 
 const PORT = process.env.port
 const mongoose_connection = process.env.connection
 
+app.use('/customers/', CustomerRouter)
+app.use('/products/', ProductRouter)
+
 const start = async () => {
-    await mongoose.connect(`${mongoose_connection}`)
-    app.listen(PORT, () => console.log("listen on the port 4000"))
+    await connect(`${mongoose_connection}`)
+    app.listen(PORT, () => console.log(`listen on the port ${PORT}`))
 }
 
 start()

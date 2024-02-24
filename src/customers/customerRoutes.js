@@ -1,0 +1,63 @@
+import express from 'express'
+import { Customer } from './customerModel.js'
+
+const CustomerRouter = express.Router()
+
+CustomerRouter.get('/', async (request, response) => {
+
+    let customer_list = await Customer.find({})
+
+    response.json({
+        status: true,
+        customer_data: customer_list
+    })
+})
+
+CustomerRouter.get('/:id/', async (request, response) => {
+
+    const {id} = request.params
+    let customer_list = await Customer.findById(id)
+
+    response.json({
+        status: true,
+        customer_data: customer_list
+    })
+})
+
+CustomerRouter.post('/', async(request, response) => {
+
+    const new_customer = new Customer(request.body)
+    await new_customer.save()
+
+    response.json({
+        status: true,
+        message: "Data Saved",
+        customer_data: new_customer
+    })
+})
+
+CustomerRouter.patch('/:id/', async(request, response) => {
+
+    const {id} = request.params
+    await Customer.findByIdAndUpdate(id, request.body)
+    const customer = await Customer.findById(id)
+
+    response.json({
+        status: true,
+        message: "Data Updated",
+        customer_data: customer
+    })
+})
+
+CustomerRouter.delete('/:id/', async(request, response) => {
+
+    const {id} = request.params
+    await Customer.findByIdAndDelete(id)
+
+    response.json({
+        status: true,
+        message: "Data Deleted",
+    })
+})
+
+export default CustomerRouter
