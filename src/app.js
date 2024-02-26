@@ -4,7 +4,7 @@ import { config } from 'dotenv'
 import cors from 'cors'
 import CustomerRouter from './customers/customerRoutes.js'
 import ProductRouter from './products/productRoutes.js'
-import ServerlessHttp from 'serverless-http'
+import TestOrderModelRouter from './orders/ordersRoutes.js'
 
 const app = express()
 
@@ -20,6 +20,7 @@ const mongoose_connection = process.env.connection
 
 app.use('/customers/', CustomerRouter)
 app.use('/products/', ProductRouter)
+app.use('/orders/', TestOrderModelRouter)
 
 const start = async () => {
     await connect(`${mongoose_connection}`)
@@ -27,5 +28,3 @@ const start = async () => {
 }
 
 start()
-
-export default ServerlessHttp(app)
