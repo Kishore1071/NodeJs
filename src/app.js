@@ -12,6 +12,12 @@ app.use(json())
 app.use(urlencoded({extended: true}))
 app.use(cors())
 
+// app.use(cors({
+//     origin: 'http://localhost:5173',
+//     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+//     allowedHeaders: ['Content-Type']
+// }))
+
 config()
 set('strictQuery', false)
 
