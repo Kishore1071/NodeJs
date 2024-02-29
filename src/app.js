@@ -4,7 +4,7 @@ import { config } from 'dotenv'
 import cors from 'cors'
 import CustomerRouter from './customers/customerRoutes.js'
 import ProductRouter from './products/productRoutes.js'
-import TestOrderModelRouter from './orders/ordersRoutes.js'
+import OrderRouter from './orders/ordersRoutes.js'
 
 const app = express()
 
@@ -15,12 +15,12 @@ app.use(cors())
 config()
 set('strictQuery', false)
 
-const PORT = process.env.port
+const PORT = process.env.PORT
 const mongoose_connection = process.env.connection
 
 app.use('/customers/', CustomerRouter)
 app.use('/products/', ProductRouter)
-app.use('/orders/', TestOrderModelRouter)
+app.use('/orders/', OrderRouter)
 
 const start = async () => {
     await connect(`${mongoose_connection}`)
