@@ -1,14 +1,44 @@
-import express from 'express'
+import express, { response } from 'express'
 import { Order, OrderProduct } from "./ordersModel.js";
 import { Product } from '../products/productModel.js';
 
 const OrderRouter = express.Router()
 
-OrderRouter.get('/', async(request, response) => {
+OrderRouter.get('/', async (request, response) => {
 
     const orders = await Order.find({})
 
-    response.json(orders)
+    let all_orders = []
+
+    for (let order of orders) {
+
+        const product_data = await OrderProduct.find({order: order._id})
+
+        const single_order_data = [
+            order,
+            product_data
+        ]
+
+        all_orders.push(single_order_data)
+    }
+
+    response.json(all_orders)
+})
+
+OrderRouter.get('/:id/', async(request, response) => {
+
+    const {id} = request.params
+
+    const orders = await Order.findById(id)
+
+    const product_data = await OrderProduct.find({order: orders._id})
+
+    const response_data = [
+        orders,
+        product_data
+    ]
+
+    response.json(response_data)
 })
 
 OrderRouter.post('/', async(request, response) => {
