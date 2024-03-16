@@ -1,0 +1,17 @@
+[
+    {
+        "customer": "65d9f754ef3d318af8adc9c4",
+        "order_number": "1",
+        "order_date": "2024-02-29"
+    },
+    [
+        {
+            "product": "65d9fd53194c16bc01f227fb",
+            "quantity": 1
+        },
+        {
+            "product": "65d9fda5bba9fa88e94bae2b",
+            "quantity": 2
+        }
+    ]
+]
