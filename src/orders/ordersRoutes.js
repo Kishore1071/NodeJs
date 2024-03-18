@@ -1,4 +1,4 @@
-import express, { response } from 'express'
+import express from 'express'
 import { Order, OrderProduct } from "./ordersModel.js";
 import { Product } from '../products/productModel.js';
 
