@@ -10,12 +10,12 @@ OrderRouter.get('/', async (request, response) => {
 
     let all_orders = []
 
-    for (let order of orders) {
+    for (let order_ident of orders) {
 
-        const product_data = await OrderProduct.find({order: order._id})
+        const product_data = await OrderProduct.find({order: order_ident._id})
 
         const single_order_data = [
-            order,
+            order_ident,
             product_data
         ]
 
@@ -82,6 +82,48 @@ OrderRouter.post('/', async(request, response) => {
     })
 
     response.json("Data Saved")
+})
+
+OrderRouter.patch('/:id/', async (request, response) => {
+
+    const {id} = request.params
+    const order_details = request.body[0]
+    const order_product = request.body[1]
+
+    await Order.findByIdAndUpdate(id, order_details)
+
+    for (let x of order_product) {
+        
+        if (x.new === true) {
+            //
+        }
+        else if (x.update === true) {
+            //
+        }
+        else if (x.delete === true) {
+            //
+        }
+    }
+
+
+})
+
+OrderRouter.delete('/:id/', async (request, response) => {
+
+    const {id} = request.params
+
+    const orders = await Order.findById(id)
+
+    const product_data = await OrderProduct.find({order: orders._id})
+
+    for (let x of product_data) {
+
+        await OrderProduct.findByIdAndDelete(x._id)
+    }
+
+    await Order.findByIdAndDelete(id)
+
+    response.json("Order Deleted")
 })
 
 export default OrderRouter
