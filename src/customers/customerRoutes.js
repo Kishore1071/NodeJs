@@ -29,6 +29,8 @@ CustomerRouter.post('/', async(request, response) => {
     const new_customer = new Customer(request.body)
     await new_customer.save()
 
+    console.log(new_customer._id)
+
     response.json({
         status: true,
         message: "Data Saved",
@@ -52,6 +54,7 @@ CustomerRouter.patch('/:id/', async(request, response) => {
 CustomerRouter.delete('/:id/', async(request, response) => {
 
     const {id} = request.params
+    console.log(id)
     await Customer.findByIdAndDelete(id)
 
     response.json({
