@@ -82,6 +82,79 @@ OrderRouter.post('/', async(request, response) => {
     response.json("")
 })
 
+
+OrderRouter.patch('/:id/', async(request, response) => {
+
+    const {id} = request.params
+
+    const order_details = request.body[0]
+
+    const product_details = request.body[1]
+
+    await Order.findByIdAndUpdate(id, order_details)
+
+    let total = 0
+
+    for (let product_data of product_details) {
+
+        if (product_data.new === true) {
+
+            const product_id_data = await Product.findById(product_data.product)
+
+            const amount = product_data.quantity * product_id_data.price
+
+            const gst_amount = (amount * product_id_data.gst) / 100
+
+            const new_order_product = new OrderProduct({
+                product: product_data.product,
+                order: id,
+                quantity: product_data.quantity,
+                amount: amount,
+                gst_amount: gst_amount,
+                sub_total: amount + gst_amount
+            })
+
+            total = total + (amount + gst_amount)
+
+            await new_order_product.save()
+        }
+
+        else if (product_data.update == true) {
+
+            const product_id_data = await Product.findById(product_data.product)
+
+            const amount = product_data.quantity * product_id_data.price
+
+            const gst_amount = (amount * product_id_data.gst) / 100
+
+            await OrderProduct.findByIdAndUpdate(product_data._id, {
+                quantity: product_data.quantity,
+                amount: amount,
+                gst_amount: gst_amount,
+                sub_total: amount + gst_amount
+            })
+
+            total = total + (amount + gst_amount)
+        }
+
+        else if (product_data.delete == true) {
+
+            await OrderProduct.findByIdAndDelete(product_data._id)
+        }
+
+        else {
+
+            total = total + product_data.sub_total
+        }
+    }
+
+    await Order.findByIdAndUpdate(id, {bill_amount: total})
+
+    response.json("Data Updated")
+
+
+})
+
 OrderRouter.delete('/:id/', async (request, response) => {
 
     const {id} = request.params
@@ -101,3 +174,4 @@ OrderRouter.delete('/:id/', async (request, response) => {
 })
 
 export default OrderRouter
+
