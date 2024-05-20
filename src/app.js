@@ -5,6 +5,7 @@ import cors from 'cors'
 import CustomerRouter from './customers/customerRoutes.js'
 import ProductRouter from './products/productRoutes.js'
 import OrderRouter from './orders/ordersRoutes.js'
+import UserRouter from './authentication/userRouter.js'
 
 const app = express()
 
@@ -27,6 +28,7 @@ const mongoose_connection = process.env.connection
 app.use('/customers/', CustomerRouter)
 app.use('/products/', ProductRouter)
 app.use('/orders/', OrderRouter)
+app.use('/user/', UserRouter)
 
 const start = async () => {
     await connect(`${mongoose_connection}`)
