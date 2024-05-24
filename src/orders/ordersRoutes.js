@@ -1,6 +1,7 @@
 import express from 'express'
 import { Order, OrderProduct } from "./ordersModel.js";
 import { Product } from '../products/productModel.js';
+import { authentication } from '../authentication/authentication.js';
 
 const OrderRouter = express.Router()
 
@@ -83,9 +84,11 @@ OrderRouter.post('/', async(request, response) => {
 })
 
 
-OrderRouter.patch('/:id/', async(request, response) => {
+OrderRouter.patch('/:id/', authentication, async(request, response) => {
 
     const {id} = request.params
+
+    request.user.name
 
     const order_details = request.body[0]
 

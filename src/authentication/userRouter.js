@@ -1,6 +1,7 @@
 import express from 'express'
 import { User, RefreshToken } from './userModel.js'
 import crypto from 'crypto'
+import jwt from 'jsonwebtoken'
 
 const UserRouter = express.Router()
 
@@ -57,7 +58,7 @@ UserRouter.post('/validate/', async (request, response) => {
                 name: username
             }
 
-            const access_token = jwt.sign(user, process.env.ACCESS_TOKEN_KEY)
+            const access_token = jwt.sign(user, process.env.ACCESS_TOKEN_KEY, {expiresIn: "30s"})
 
             const refresh_token = jwt.sign(user, process.env.REFRESH_TOKEN_KEY)
 
@@ -84,6 +85,51 @@ UserRouter.post('/validate/', async (request, response) => {
     }
 
 })
+
+
+UserRouter.post('/token/', async(request, response) => {
+
+    const refresh_token = request.body.refresh_token
+    
+    if (refresh_token === null) {
+        return response.status(401).json("No token found")
+    }
+
+    const all_refresh_tokens = await RefreshToken.find({refresh_token: refresh_token})
+
+    if (all_refresh_tokens.length === 0) {
+        
+        return response.status(403).json("Invalid Token")
+    }
+
+    jwt.verify(refresh_token, process.env.REFRESH_TOKEN_KEY, (error, user) => {
+        
+        if (error) {
+            return response.status(403).json("Token Verification Failed")
+        }
+
+        const access_token = jwt.sign({name: user.name}, process.env.ACCESS_TOKEN_KEY, {expiresIn: "30s"})
+        
+        response.json({
+            access_token: access_token
+        })
+    })
+
+})
+
+UserRouter.post('/logout/', async (request, response) => {
+
+    const refresh_token = request.body.refresh_token
+
+    const all_refresh_tokens = await RefreshToken.find({})
+
+    let selected_token = all_refresh_tokens.find(token => token.refresh_token === refresh_token)
+
+    await RefreshToken.findByIdAndDelete(selected_token._id)
+
+    response.status(200).json("Refresh Token Deleted")
+})
+
 
 
 

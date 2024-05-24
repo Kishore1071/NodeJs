@@ -1,5 +1,6 @@
 import express from 'express'
 import { Customer } from './customerModel.js'
+import { authentication } from '../authentication/authentication.js'
 
 const CustomerRouter = express.Router()
 
@@ -13,7 +14,7 @@ CustomerRouter.get('/', async (request, response) => {
     })
 })
 
-CustomerRouter.get('/:id/', async (request, response) => {
+CustomerRouter.get('/:id/', authentication , async (request, response) => {
 
     const {id} = request.params
     let customer_list = await Customer.findById(id)
