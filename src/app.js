@@ -7,6 +7,7 @@ import CustomerRouter from './customers/customerRoutes.js'
 import ProductRouter from './products/productRoutes.js'
 import OrderRouter from './orders/ordersRoutes.js'
 import UserRouter from './authentication/userRouter.js'
+import NewRouter from './new.js'
 
 const app = express()
 
@@ -30,6 +31,7 @@ app.use('/customers/', CustomerRouter)
 app.use('/products/', ProductRouter)
 app.use('/orders/', OrderRouter)
 app.use('/user/', UserRouter)
+app.use('/data/', NewRouter)
 
 const start = async () => {
     await connect(`${mongoose_connection}`)
