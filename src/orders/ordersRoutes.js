@@ -84,11 +84,11 @@ OrderRouter.post('/', async(request, response) => {
 })
 
 
-OrderRouter.patch('/:id/', authentication, async(request, response) => {
+OrderRouter.patch('/:id/', async(request, response) => {
 
     const {id} = request.params
 
-    request.user.name
+    // request.user.name
 
     const order_details = request.body[0]
 

@@ -14,7 +14,7 @@ CustomerRouter.get('/', async (request, response) => {
     })
 })
 
-CustomerRouter.get('/:id/', authentication , async (request, response) => {
+CustomerRouter.get('/:id/' , async (request, response) => {
 
     const {id} = request.params
     let customer_list = await Customer.findById(id)
