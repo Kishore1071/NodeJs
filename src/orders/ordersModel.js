@@ -35,7 +35,8 @@ const OrderProductSchema = mongoose.Schema(
         },
         quantity: {
             type: Number,
-            required: true
+            required: true,
+            default: 67
         },
         amount: {
             type: Number,

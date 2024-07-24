@@ -49,6 +49,9 @@ OrderRouter.post('/', async(request, response) => {
     const order_details = request.body[0]
     const product_details = request.body[1]
 
+    console.log(order_details)
+    console.log(product_details)
+
     const new_order = new Order(order_details)
 
     await new_order.save()
@@ -64,7 +67,7 @@ OrderRouter.post('/', async(request, response) => {
         const gst_amount = (amount * product_id_data.gst) / 100
 
         const new_order_product = new OrderProduct({
-            product: product_data.product,
+            product_ref: product_data.product,
             order: new_order._id,
             quantity: product_data.quantity,
             amount: amount,
@@ -78,9 +81,9 @@ OrderRouter.post('/', async(request, response) => {
 
     }
 
-    await Order.findByIdAndUpdate(new_order._id, {bill_amount:total_amount})
+    await Order.findByIdAndUpdate(new_order._id, {bill_amount:total_amount})/
 
-    response.json("")
+    response.json("Data Saved")
 })
 
 
@@ -157,6 +160,7 @@ OrderRouter.patch('/:id/', async(request, response) => {
 
 
 })
+
 
 OrderRouter.delete('/:id/', async (request, response) => {
 
