@@ -6,7 +6,19 @@ const CustomerSchema = mongoose.Schema(
             type: String,
             required: true
         },
-        industry: {
+        company_name: {
+            type: String,
+            required: true
+        },
+        member_since: {
+            type: String,
+            required: true
+        },
+        phone_number: {
+            type: String,
+            required: true
+        },
+        address: {
             type: String,
             required: true
         }
