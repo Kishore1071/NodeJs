@@ -43,4 +43,6 @@
 
 1) npm install cors => Cors allows to API's fetchable from frontend projects
 
+<!-- connection = mongodb+srv://Kishore:Kishore928503@cluster0.avdfxtj.mongodb.net/node_db?retryWrites=true&w=majority&appName=Cluster0 -->
+
 
