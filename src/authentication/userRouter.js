@@ -38,9 +38,13 @@ UserRouter.get('/generate/key/', (request, response) => {
 
 UserRouter.post('/validate/', async (request, response) => {
 
+    console.log(request.body)
+
     const {username, password} = request.body
 
     const all_user = await User.find({})
+
+    console.log(all_user)
 
     const user_check = all_user.find(user => user.username === username)
 
